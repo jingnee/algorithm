@@ -40,10 +40,14 @@ void dfs(int r, int c, int dir, int cnt) {
 			else if (dd > 3)dd = 0;
 			if (visit[nr][nc][dd] == false) {			
 				visit[nr][nc][dd] = true;
-				if (dd != dir) 
-					dfs(nr, nc, dd, cnt+1);
-				else
+				if (dd != dir) {
+					dfs(nr, nc, dd, cnt + 1);
+					visit[nr][nc][dd] = false;
+				}
+				else {
 					dfs(nr, nc, dd, cnt);
+					visit[nr][nc][dd] = false;
+				}
 			}
 		}
 	}
@@ -69,23 +73,30 @@ int main() {
 	answer = INF;
 	//int direction;
 	//문의 위치에 따라서 시작해야할 방향이 다름(문이 두가지경우에 속하는 좌표가 존재할 수 있으므로 if문들로)
-	if (door[0][0] == 0) {			//문이 맨 위에 달린 경우 빛은 아래로
-		dfs(door[0][0], door[0][1], 1, 0);
-		visit_init();
-	}
-	if (door[0][1] == 0) {
-		dfs(door[0][0], door[0][1], 2, 0);		//문이 왼쪽에 달린 경우 빛은 오른쪽으로
-		visit_init();
-	}
-	if (door[0][0] == N - 1) {
-		dfs(door[0][0], door[0][1], 3, 0);	//문이 맨 아래에 달린 경우 빛은 위쪽으로
-		visit_init();
-	}
-	if (door[0][1] == N - 1) {
-		dfs(door[0][0], door[0][1], 0, 0);	//문이 오른쪽에 달린 경우 빛은 왼쪽으로
-		visit_init();
-	}
-
+	//if (door[0][0] == 0) {			//문이 맨 위에 달린 경우 빛은 아래로
+	//	dfs(door[0][0], door[0][1], 1, 0);
+	//	visit_init();
+	//}
+	//if (door[0][1] == 0) {
+	//	dfs(door[0][0], door[0][1], 2, 0);		//문이 왼쪽에 달린 경우 빛은 오른쪽으로
+	//	visit_init();
+	//}
+	//if (door[0][0] == N - 1) {
+	//	dfs(door[0][0], door[0][1], 3, 0);	//문이 맨 아래에 달린 경우 빛은 위쪽으로
+	//	visit_init();
+	//}
+	//if (door[0][1] == N - 1) {
+	//	dfs(door[0][0], door[0][1], 0, 0);	//문이 오른쪽에 달린 경우 빛은 왼쪽으로
+	//	visit_init();
+	//}
+	dfs(door[0][0], door[0][1], 1, 0);			//문이 위
+	visit_init();
+	dfs(door[0][0], door[0][1], 2, 0);			//문이 왼쪽
+	visit_init();
+	dfs(door[0][0], door[0][1], 3, 0);			//문이 아래
+	visit_init();
+	dfs(door[0][0], door[0][1], 0, 0);			//문이 오른쪽
+	visit_init();
 	//answer = INF;
 	//dfs(door[0][0], door[0][1], direction, 0);
 	cout << answer << endl;
@@ -146,4 +157,19 @@ int main() {
 ..................................................
 *................................................*
 !!...............................................#
+<<<<<<< HEAD
 answer : 8*/
+=======
+answer : 8
+
+8
+***#****
+*!.!..!*
+*......*
+*..*...*
+*!!....*
+*.!!..!*
+*......*
+***!****
+answer : 4*/
+>>>>>>> 337da4dae1d66dd13fe0167051dd37813e2aa337
