@@ -1,12 +1,7 @@
 //졸려
 /*
-<<<<<<< HEAD
 내가 했던 실수 : 반복싸이클이 글자수-1이 아니다.
 반복싸이클을 cnt를통해서 구해주어야 함....
-=======
-	내가 했던 실수 : 반복싸이클이 글자수-1이 아니다.
-	반복싸이클을 cnt를통해서 구해주어야 함....
->>>>>>> 855c4e9559796f950b95f177cec60a7d0ce02e48
 */
 #include <iostream>
 #include <string>
@@ -29,11 +24,9 @@ int main() {
 	if (length % 2 == 0)sr = length - 1;
 	else sr = length - 2;
 	int cnt = 0;
-<<<<<<< HEAD
-	while (1) {
-=======
+
 	while(1) {
->>>>>>> 855c4e9559796f950b95f177cec60a7d0ce02e48
+
 		string temp;
 
 		for (int i = 0; i < length; i += 2) {
@@ -62,7 +55,7 @@ int main() {
 #include <iostream>
 #include <string>
 using namespace std;
-<<<<<<< HEAD
+
 string word[1001];
 int n;
 int main() {
@@ -110,7 +103,7 @@ break;
 }
 cout << word[x%cnt];
 }
-=======
+
 
 string word[1001];
 int n;
@@ -164,6 +157,5 @@ int main() {
 		cout << word[x%cnt];
 	}
 
->>>>>>> 855c4e9559796f950b95f177cec60a7d0ce02e48
 }
 */
