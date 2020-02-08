@@ -1,17 +1,18 @@
 /*
-연구소
+연구소 3
 */
 #include<iostream>
 #include<queue>
 using namespace std;
 
 int N, M;
-int map[50][50];
-int virus_check[50][50];
-int temp_map[50][50];
+int map[50][50];				//초기상태배열
+int virus_check[50][50];		//처음 바이러스입력받았을때 벽만 1로 설정
+int temp_map[50][50];			//visit배열
 int mintime = 987654321;
 int maxtime = 0;
 int flag;
+int total;
 struct v {
 	int r;
 	int c;
@@ -32,41 +33,30 @@ void copy_map() {
 	}
 }
 
-int check() {		//check값이 0보다 크면 바이러스가 모두 안퍼진거
-	int num = 0;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			if (temp_map[i][j] == 0)num++;
-		}
-	}
-	return num;
-}
-
 void BFS() {
+	int cnt = 0;
 	while (!infected.empty()) {
 		v temp = infected.front();
 		infected.pop();
 		for (int i = 0; i < 4; i++) {
 			int nr = temp.r + dr[i];
 			int nc = temp.c + dc[i];
-			if (nr >= 0 && nc >= 0 && nr < N && nc < N && temp_map[nr][nc] == 0) {
+			if (nr >= 0 && nc >= 0 && nr < N && nc < N && temp_map[nr][nc] == 0) {			//경계안에 있고, 방문한적 없는곳만
 				v insert;
 				insert.r = nr;
 				insert.c = nc;
 				insert.time = temp.time + 1;
 				infected.push(insert);
 				temp_map[nr][nc] = 1;
-				maxtime = (maxtime < insert.time) ? insert.time : maxtime;
+
+				if (map[nr][nc] == 0) {			//빈공간일때만 시간저장
+					cnt++;
+					maxtime = insert.time;
+				}
 			}
 		}
-	 }
-	int num = check();
-	if (num == 0) {
-		flag = 1;
-		mintime = (mintime > maxtime) ? maxtime : mintime;
-		//cout << "mintime: " << mintime << endl;
 	}
-	if (flag == 0 && num == 0)mintime = 987654321;
+	if (cnt == total)mintime = (maxtime < mintime) ? maxtime : mintime;			//빈공간이 없을경우에 지금 이맵에서 걸린시간(maxtime)과 여지껏 나왔던 걸린시간(mintime)중 작은값으로 갱신
 }
 
 void combi(int index, int cnt) {
@@ -95,18 +85,23 @@ int main() {
 			cin >> map[i][j];
 			if (map[i][j] == 1) 			//벽인경우 표시
 				virus_check[i][j] = 1;
-			
-			else if (map[i][j] == 2) {		//바이러스 가능한 위치 표시
-				//virus_check[i][j] = 1;
+
+			else if (map[i][j] == 2) {
 				v temp;
 				temp.r = i;
 				temp.c = j;
 				temp.time = 0;
 				virus.push_back(temp);
 			}
+			else total++;
 		}
 	}
-	combi(0,0);
-	if (mintime == 987654321)mintime = -1;
+
+	if (total != 0)
+		combi(0, 0);
+
+	if (total == 0)mintime = 0;
+	else if (mintime == 987654321)mintime = -1;
+
 	cout << mintime << endl;
 }
