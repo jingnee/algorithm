@@ -1,4 +1,4 @@
-/*Ãß¾ïÀÇ 2048*/
+/*ÃƒÃŸÂ¾Ã¯Ã€Ã‡ 2048*/
 
 #include<iostream>
 #include<queue>
@@ -26,7 +26,7 @@ int main() {
 		if (!strcmp(dir, "left")) {
 			for (int i = 0; i < N; i++) {
 				queue<int> que;
-				for (int j = 0; j < 0; j++) {
+				for (int j = 0; j < N; j++) {
 					if (map[i][j] != 0)que.push(map[i][j]);
 				}
 				int index = 0;
