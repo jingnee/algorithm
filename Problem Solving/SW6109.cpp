@@ -1,4 +1,4 @@
-/*Ãß¾ïÀÇ 2048*/
+/*ÃƒÃŸÂ¾Ã¯Ã€Ã‡ 2048*/
 
 #include<iostream>
 #include<queue>
