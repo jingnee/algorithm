@@ -1,89 +1,86 @@
-//ê±°ìš¸ ì„¤ì¹˜
-
-#include <iostream>
-#include <algorithm>
+/*°Å¿ï ¼³Ä¡*/
+#include<iostream>
+#include<queue>
 using namespace std;
 
-#define INF 987654321
-
-bool visit[50][50][4];
-int mirror[2500][2];
-int mirror_num;
-char map[50][50];
-int door[2][2];				//door[0]ì€ ì²«ë²ˆì§¸ ë¬¸, door[1]ì€ ë„ì°©ì§€ ë¬¸
-int dr[4] = { 0,1,0,-1 };
-int dc[4] = { -1,0,1,0 };
 int N, answer;
+char map[50][50];
+//int visit[50][50];
+int dr[4] = { 0,1,0,-1 };				//¿Ş ¾Æ·¡ ¿À¸¥ÂÊ À§ÂÊ
+int dc[4] = { -1,0,1,0 };
+struct MIRROR {
+	int count, r, c, dir;
+};
 
-void visit_init() {
-	for (int i = 0; i < mirror_num; i++){
-		for (int j = 0; j < 4; j++) {
-			visit[mirror[i][0]][mirror[i][1]][j] = false;
+bool operator<(MIRROR a, MIRROR b) {
+	return a.count > b.count;
+}
+
+priority_queue<MIRROR> mirrors;
+int door[2][2];
+
+void BFS() {
+	while (!mirrors.empty()) {
+
+		MIRROR m = mirrors.top();
+		mirrors.pop();
+
+		int nr = m.r + dr[m.dir];
+		int nc = m.c + dc[m.dir];
+		if (nr<0 || nc<0 || nr>N || nc>N)continue;
+		while (map[nr][nc] == '.') {
+			nr += dr[m.dir];
+			nc += dc[m.dir];
+		}
+
+		if (nr == door[1][0] && nc == door[1][1]) {
+			answer = m.count;
+			return;
+		}
+
+		if (nr >= 0 && nc >= 0 && nr < N && nc < N && map[nr][nc] == '!') {
+			//visit[nr][nc] = 1;
+			MIRROR temp;
+			temp.r = nr;
+			temp.c = nc;
+			temp.count = m.count + 1;
+			int dir = m.dir - 1;
+			if (dir < 0)dir = 3;			//°Å¿ïÀ§Ä¡¿¡¼­ °¥ ¼ö ÀÖ´Â µÎ¹æÇâ´Ù Å¥¿¡ ³Ö¾îÁÜ
+			temp.dir = dir;
+			mirrors.push(temp);
+			dir = m.dir + 1;
+			if (dir > 3)dir = 0;
+			temp.dir = dir;
+			mirrors.push(temp);
+			//¼³Ä¡ ¾ÈÇÏ´Â °æ¿ìµµ ÀÖÀ½
+			temp.dir = m.dir;
+			temp.count = m.count;
+			mirrors.push(temp);
 		}
 	}
 }
-void dfs(int r, int c, int dir, int cnt) {
-	int nr, nc;
-	nr = r + dr[dir];
-	nc = c + dc[dir];
-	if (nr == door[1][0] && nc == door[1][1]) {		//ë‹¤ìŒ ì¢Œí‘œê°€ ë¬¸ì¸ ê²½ìš°
-		answer = min(answer, cnt);
-		return;
-	}
-	else if (map[nr][nc] == '*')return;				//ë‹¤ìŒ ì¢Œí‘œê°€ ë²½ì¸ ê²½ìš°
-	else if (map[nr][nc] == '.')dfs(nr, nc, dir, cnt);		//ê³„ì† ê°
-	else if (map[nr][nc] == '!') {		//ë‹¤ìŒ ì¢Œí‘œê°€ ê±°ìš¸ì¼ ê²½ìš°
-		for (int i = -1; i < 2; i++) {	//ê±°ìš¸ì„ ë§Œë‚˜ë©´ ê°€ëŠ¥í•œ ë°©í–¥ì€ ì„¸ê°€ì§€
-			int dd = dir;
-			dd += i;
-			if (dd < 0)dd = 3;
-			else if (dd > 3)dd = 0;
-			if (visit[nr][nc][dd] == false) {			
-				visit[nr][nc][dd] = true;
-				if (dd != dir) {
-					dfs(nr, nc, dd, cnt + 1);
-					visit[nr][nc][dd] = false;
-				}
-				else {
-					dfs(nr, nc, dd, cnt);
-					visit[nr][nc][dd] = false;
-				}
-			}
-		}
-	}
-}
-
 int main() {
 	cin >> N;
-	int dor = 0;
-	for (int i = 0; i < N; i++) {			//map ì…ë ¥ë°›ê¸°
+	int index = 0;
+	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
 			cin >> map[i][j];
 			if (map[i][j] == '#') {
-				door[dor][0] = i;
-				door[dor++][1] = j;
-			}
-			else if (map[i][j] == '!') {
-				mirror[mirror_num][0] = i;
-				mirror[mirror_num++][1] = j;
+				door[index][0] = i;
+				door[index++][1] = j;
 			}
 		}
 	}
-
-	answer = INF;
-
-	dfs(door[0][0], door[0][1], 1, 0);			//ë¬¸ì´ ìœ„
-	visit_init();
-	dfs(door[0][0], door[0][1], 2, 0);			//ë¬¸ì´ ì™¼ìª½
-	visit_init();
-	dfs(door[0][0], door[0][1], 3, 0);			//ë¬¸ì´ ì•„ë˜
-	visit_init();
-	dfs(door[0][0], door[0][1], 0, 0);			//ë¬¸ì´ ì˜¤ë¥¸ìª½
-	visit_init();
-	//answer = INF;
-	//dfs(door[0][0], door[0][1], direction, 0);
+	MIRROR mirror;
+	mirror.count = 0;
+	mirror.r = door[0][0];
+	mirror.c = door[0][1];
+	for (int i = 0; i < 4; i++) {
+		mirror.dir = i;
+		mirrors.push(mirror);
+	}
+	//visit[door[0][0]][door[0][1]] = 1;
+	BFS();
 	cout << answer << endl;
+
 }
-
-
-
