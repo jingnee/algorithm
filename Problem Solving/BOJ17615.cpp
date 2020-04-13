@@ -7,7 +7,7 @@ using namespace std;
 string balls;
 int n, answer = 2e9;
 
-int main() {
+int main() { 
 	int R1 = 0, R2, B1, B2;
 	cin >> n >> balls;
 	for (auto i : balls) {
