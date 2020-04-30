@@ -1,4 +1,4 @@
-/*다음 펠린드롬 수*/
+/*다음 펠린드롬 수*/ 
 #include <iostream>
 #include <string>
 #include <algorithm>
