@@ -1,22 +1,25 @@
-//동방 프로젝트(small)
+//동방 프로젝트(Small)
 #include <iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
 int parent[101];
-bool check[101];
 int N, M, ans;
+vector<pair<int, int>> vec;
 
 int getParent(int x) {
 	if (parent[x] == x)return x;
-	else return parent[x] = getParent(parent[x]);
+	return parent[x] = getParent(parent[x]);
 }
 
 void Union(int a, int b) {
-	a = parent[a];
-	b = parent[b];
 
-	if (a < b)parent[b] = a;
-	else parent[a] = b;
+	for (int i = a; i < b; i++) {
+		if (getParent(i) != getParent(i + 1)) {
+			parent[getParent(i+1)] = getParent(i);
+		}
+	}
 }
 
 int main() {
@@ -25,19 +28,20 @@ int main() {
 	cout.tie(NULL);
 
 	cin >> N >> M;
+	
 	for (int i = 1; i <= N; i++)parent[i] = i;
 	for (int i = 0; i < M; i++) {
 		int a, b;
 		cin >> a >> b;
-		while (getParent(a) != getParent(b)) {
-			Union(a, b);
-			b--;
-		}
+		vec.push_back(make_pair(a, b));
 	}
+	sort(vec.begin(), vec.end());
+	for (auto v : vec)Union(v.first, v.second);
 
+	int check = 0;
 	for (int i = 1; i <= N; i++) {
-		if (!check[parent[i]]) {
-			check[parent[i]] = true;
+		if (parent[i]!=check) {
+			check = parent[i];
 			ans++;
 		}
 	}
