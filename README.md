@@ -12,6 +12,12 @@
   - bellman-Ford
   - max Flow Algorithm
   - 정렬(버블, 삽입, 퀵, 분할정복, 힙)
-  - Max Flow Algorithm
+  - LIS
+  - Trie
+  - convex Hull
+  - 경로압축
+  - 
+  - 
+  - 
 - programmers 2단계까지 다풀기!
 
