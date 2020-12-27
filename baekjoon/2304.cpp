@@ -1,4 +1,4 @@
-//Ã¢°í ´Ù°¢Çü
+//ì°½ê³  ë‹¤ê°í˜• 
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -17,7 +17,7 @@ int main() {
 	sort(vec.begin(), vec.end());
 	int idx = 0;
 	int i = 0;
-	//Áß°£ÀÇ °¡Àå ³ôÀº À§Ä¡ Àü±îÁö ¾Õ¿¡¼­ºÎÅÍ
+	//ì¤‘ê°„ì˜ ê°€ì¥ ë†’ì€ ìœ„ì¹˜ ì „ê¹Œì§€ ì•ì—ì„œë¶€í„°
 	while (vec[i].second < high) {
 		if (vec[i].second > vec[idx].second) {
 			ans += (vec[i].first - vec[idx].first)*vec[idx].second;
@@ -26,11 +26,11 @@ int main() {
 		i++;
 	}
 	ans += (vec[i].first - vec[idx].first)*vec[idx].second;
-	//i´Â Á¦ÀÏ ³ôÀº À§Ä¡ÀÇ Ã¹¹øÂ°
+	//iëŠ” ì œì¼ ë†’ì€ ìœ„ì¹˜ì˜ ì²«ë²ˆì§¸
 
 	idx = N - 1;
 	int j = N - 1;
-	//Áß°£ÀÇ °¡Àå ³ôÀº À§Ä¡ Àü±îÁö µÚ¿¡¼­ºÎÅÍ
+	//ì¤‘ê°„ì˜ ê°€ì¥ ë†’ì€ ìœ„ì¹˜ ì „ê¹Œì§€ ë’¤ì—ì„œë¶€í„°
 	while (vec[j].second < high) {
 		if (vec[j].second > vec[idx].second) {
 			ans += (vec[idx].first - vec[j].first)*vec[idx].second;
@@ -39,7 +39,7 @@ int main() {
 		j--;
 	}
 	ans += (vec[idx].first - vec[j].first)*vec[idx].second;
-	//Áß°£ °¡Àå ³ôÀº À§Ä¡ ´õÇÏ±â
+	//ì¤‘ê°„ ê°€ì¥ ë†’ì€ ìœ„ì¹˜ ë”í•˜ê¸°
 	ans += (vec[j].first - vec[i].first + 1)*high;
 
 	cout << ans;
