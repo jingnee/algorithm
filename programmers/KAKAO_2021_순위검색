@@ -1,0 +1,104 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> db[3][2][2][2];
+
+vector<string> split_query(string query) {
+	string temp = "";
+	vector<string> ret;
+
+	for (auto c : query) {
+		if (c == ' ') {
+			if(temp != "and") ret.push_back(temp);
+			temp = "";
+		}
+		else temp += c;
+	}
+	ret.push_back(temp);
+	return ret;
+}
+
+vector<int> split_info(string info) {
+	string temp = "";
+	vector<int> ret;
+	for (auto c : info) {
+		if (c == ' ') {
+			if (temp == "cpp" || temp == "backend" || temp == "junior" || temp == "chicken")ret.push_back(0);
+			else if (temp == "python")ret.push_back(2);
+			else ret.push_back(1);
+			temp = "";
+		}
+		else temp += c;
+	}
+	ret.push_back(stoi(temp));
+	return ret;
+}
+
+vector<int> solution(vector<string> info, vector<string> query) {
+	vector<int> answer;
+	
+	// info split후 db배열에 정리
+	for (auto i : info) {
+		vector<int> v = split_info(i);
+		db[v[0]][v[1]][v[2]][v[3]].push_back(v[4]);
+	}
+
+	//점수 오름차순 정렬
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			for (int k = 0; k < 2; k++) {
+				for (int l = 0; l < 2; l++) {
+					sort(db[i][j][k][l].begin(), db[i][j][k][l].end());
+				}
+			}
+		}
+	}
+
+	//각 쿼리마다 해당하는 학생 수 구하기
+	//점수는 이분탐색으로 찾음
+	for (auto q : query) {
+		vector<string> v = split_query(q);
+
+		//쿼리에 따른 탐색 구간 정하기
+		int as, ae, bs, be, cs, ce, ds, de;
+
+		if (v[0] == "cpp") as = 0, ae = 1;
+		else if (v[0] == "java") as = 1, ae = 2;
+		else if (v[0] == "python") as = 2, ae = 3;
+		else as = 0, ae = 3;
+
+		if (v[1] == "backend")bs = 0, be = 1;
+		else if (v[1] == "frontend")bs = 1, be = 2;
+		else bs = 0, be = 2;
+
+		if (v[2] == "junior")cs = 0, ce = 1;
+		else if (v[2] == "senior")cs = 1, ce = 2;
+		else cs = 0, ce = 2;
+
+		if (v[3] == "chicken")ds = 0, de = 1;
+		else if (v[3] == "pizza")ds = 1, de = 2;
+		else ds = 0, de = 2;
+
+		int score = stoi(v[4]);
+
+		int ans = 0;
+		for (int a = as; a < ae; a++) {
+			for (int b = bs; b < be; b++) {
+				for (int c = cs; c < ce; c++) {
+					for (int d = ds; d < de; d++) {
+						int db_size = db[a][b][c][d].size();
+						if (db_size == 0)continue;
+
+						int idx = lower_bound(db[a][b][c][d].begin(), db[a][b][c][d].end(), score) - db[a][b][c][d].begin();
+						ans += db_size - idx;
+					}
+				}
+			}
+		}
+		answer.push_back(ans);
+	}
+	return answer;
+}
